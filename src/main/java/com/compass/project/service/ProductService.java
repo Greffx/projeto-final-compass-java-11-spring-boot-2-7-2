@@ -53,6 +53,10 @@ public class ProductService {
 			return productRepository.filterByPriceGreaterThan(minPrice);
 		} else if (name == null) {
 			return productRepository.filterByMinMaxPrice(minPrice, maxPrice);
+		} else if (minPrice == null) {
+			return productRepository.filterByMaxPriceAndName(maxPrice, name);
+		} else if (maxPrice == null) {
+			return productRepository.filterByMinPriceAndName(minPrice, name);
 		}
 		return productRepository.filterByPriceAndName(minPrice, maxPrice, name);
 	}
