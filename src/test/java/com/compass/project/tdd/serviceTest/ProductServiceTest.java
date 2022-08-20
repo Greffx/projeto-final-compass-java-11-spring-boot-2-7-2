@@ -20,7 +20,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.compass.project.entity.Product;
-
+import com.compass.project.entity.dto.ProductDto;
 import com.compass.project.repository.ProductRepository;
 import com.compass.project.service.ProductService;
 
@@ -80,7 +80,7 @@ public class ProductServiceTest {
 		Product product = productForTest();
 		
 		when(productRepository.save(any())).thenReturn(product);
-		Product result = productService.insertNewProduct(product);
+		Product result = productService.insertNewProduct(productDtoForTest());
 
 		assertNotNull(result);
 		assertEquals(Product.class, result.getClass());
@@ -88,7 +88,7 @@ public class ProductServiceTest {
 		assertEquals("Coleira", result.getName());
 
 	}
-	
+	 
 	@Test
 	void endPointUpdateShouldReturnProductWithOtherAtributes() {
 		Optional<Product> optionalProduct = optionalProductForTest();
@@ -109,6 +109,11 @@ public class ProductServiceTest {
 	private Product productForTest() {
 		Product justOneProduct = new Product(10L, "Coleira", 250.20, "Coleira para cachorro");
 		return justOneProduct;
+	}
+	
+	private ProductDto productDtoForTest() {
+		Product justOneProduct = new Product(10L, "Coleira", 250.20, "Coleira para cachorro");
+		return new ProductDto(justOneProduct);
 	}
 
 	public Optional<Product> optionalProductForTest() {

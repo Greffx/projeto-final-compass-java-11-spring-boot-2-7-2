@@ -9,6 +9,8 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.compass.project.entity.dto.ProductDto;
+
 @Entity
 public class Product {
 
@@ -26,7 +28,7 @@ public class Product {
 	
 	@NotNull
 	@NotEmpty
-	@Length(min = 2)
+	@Length(min = 10)
 	private String description;
 
 	public Product() {
@@ -37,6 +39,13 @@ public class Product {
 		this.name = name;
 		this.price = price;
 		this.description = description;
+	}
+	
+	public Product(ProductDto product) {
+		this.id = product.getId();
+		this.name = product.getName();
+		this.price = product.getPrice();
+		this.description = product.getDescription();
 	}
 
 	public String getName() {

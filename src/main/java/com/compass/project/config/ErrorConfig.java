@@ -10,7 +10,6 @@ public class ErrorConfig {
 	private String pathError;
 
 	public ErrorConfig(LocalDateTime date, Integer statusError, String messageError, String pathError) {
-		super();
 		this.date = date;
 		StatusError = statusError;
 		this.messageError = messageError;

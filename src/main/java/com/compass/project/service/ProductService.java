@@ -7,8 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.compass.project.entity.Product;
+import com.compass.project.entity.dto.ProductDto;
 import com.compass.project.repository.ProductRepository;
-
+ 
 @Service
 public class ProductService {
 
@@ -24,7 +25,8 @@ public class ProductService {
 		return onlyOneProductById.get();
 	}
 
-	public Product insertNewProduct(Product product) {
+	public Product insertNewProduct(ProductDto productDto) {
+		Product product = new Product(productDto);
 		return productRepository.save(product);
 	}
 
@@ -43,7 +45,7 @@ public class ProductService {
 		}
 		return productRepository.save(productThatWillBeChanged);
 	}
-
+ 
 	public List<Product> listOfGreaterAndLowerPriceAndNameProduct(Double minPrice, Double maxPrice, String name) {
 		if (minPrice == null && maxPrice == null) {
 			return productRepository.filterByName(name);

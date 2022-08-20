@@ -48,20 +48,20 @@ public class ProductController {
 	}
 
 	@PostMapping
-	public ResponseEntity<ProductDto> createProduct(@RequestBody Product product) {
+	public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto product) {
 		Product createdProduct = productService.insertNewProduct(product);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdProduct.getId())
 				.toUri();
-		return ResponseEntity.created(uri).body(new ProductDto(productService.insertNewProduct(product)));
+		return ResponseEntity.created(uri).body(new ProductDto(createdProduct));
 	}
-
+ 
 	@PutMapping("/{id}")
 	public ResponseEntity<ProductDto> updateProduct(@PathVariable Long id, @RequestBody Product product) {
 		return ResponseEntity.ok().body(new ProductDto(productService.updateProduct(id, product)));
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Product> deleteProduct(@PathVariable Long id) {
+	public ResponseEntity<ProductDto> deleteProduct(@PathVariable Long id) {
 		productService.deleteProduct(id);
 		return ResponseEntity.noContent().build();
 	}
