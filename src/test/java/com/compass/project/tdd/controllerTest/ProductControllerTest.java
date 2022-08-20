@@ -36,7 +36,7 @@ public class ProductControllerTest {
 	void shouldReturnNoContent() throws Exception {
 		mockMvc
 		.perform(MockMvcRequestBuilders
-				.delete("/products/1")
+				.delete(uriContentById())
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 		.andExpect(MockMvcResultMatchers
@@ -60,7 +60,7 @@ public class ProductControllerTest {
 		String product = "{\"name\":\"ProductTest\",\"price\":\"10.20\",\"description\":\"Product_test\"}";
 		mockMvc
 		.perform(MockMvcRequestBuilders
-				.get("/products/1")
+				.get(uriContentById())
 				.content(product)
 				.contentType(MediaType.APPLICATION_JSON))
 		.andExpect(MockMvcResultMatchers
@@ -73,7 +73,7 @@ public class ProductControllerTest {
 		String product = "{\"name\":\"ProductTest\",\"price\":\"10.20\",\"description\":\"Product_test\"}";
 		mockMvc
 		.perform(MockMvcRequestBuilders
-				.put("/products/1")
+				.put(uriContentById())
 				.content(product)
 				.contentType(MediaType.APPLICATION_JSON))
 		.andExpect(MockMvcResultMatchers
@@ -83,6 +83,11 @@ public class ProductControllerTest {
 	
 	private URI uriContent() throws Exception {
 		URI uri = new URI("/products");
+		return uri;
+	}
+	
+	private URI uriContentById() throws Exception {
+		URI uri = new URI("/products/1");
 		return uri;
 	}
 }
