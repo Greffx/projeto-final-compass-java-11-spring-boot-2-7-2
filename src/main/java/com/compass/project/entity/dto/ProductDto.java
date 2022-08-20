@@ -11,7 +11,10 @@ public class ProductDto {
 	private String name;
 	private String description;
 	private Double price;
-
+ 
+	public ProductDto() {
+	}
+	
 	public ProductDto(Product product) {
 		this.id = product.getId();
 		this.name = product.getName();
