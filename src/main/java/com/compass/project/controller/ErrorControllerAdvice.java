@@ -34,7 +34,7 @@ public class ErrorControllerAdvice extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler()
 	public ResponseEntity<Object> internalErrorServerException(RuntimeException ex, WebRequest request) {
-		String error = "Internal Server Error";
+		String error = "Error 505 \nInternal Server Error";
 		return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
 	}
 }
