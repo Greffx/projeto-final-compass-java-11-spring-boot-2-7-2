@@ -1,4 +1,4 @@
-package com.compass.project.tdd.repository;
+package com.compass.project.tdd.serviceTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -25,7 +25,7 @@ import com.compass.project.repository.ProductRepository;
 import com.compass.project.service.ProductService;
 
 @SpringBootTest
-public class ProductRepositoryTest {
+public class ProductServiceTest {
 
 	@InjectMocks
 	private ProductService productService;
@@ -106,7 +106,7 @@ public class ProductRepositoryTest {
 
 	}
 
-	public Product productForTest() {
+	private Product productForTest() {
 		Product justOneProduct = new Product(10L, "Coleira", 250.20, "Coleira para cachorro");
 		return justOneProduct;
 	}
