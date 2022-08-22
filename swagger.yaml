@@ -1,0 +1,281 @@
+openapi: 3.0.1 
+info: 
+  title: Compass Program Final Project Documentation
+  description: Final project, API REST to create, read, update and delete products  
+  version: 0.0.1
+  contact: 
+    name: Eduardo Greff
+    email: eduardo.greff.pb@compasso.com.br
+servers:
+  - url: http://localhost:9999
+tags:
+  - name: Product REST
+    description: All endpoints
+paths:
+  /products:
+    get:
+      tags: 
+        - Product REST 
+      summary: list of all products
+      responses:
+        200:
+          description: success case
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/StandardStatusOkResponse'
+        400:
+          description: bad request case
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/StandardStatusResponsesError'
+        404:
+          description: not found case
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/StandardStatusResponsesError'
+        500:
+          description: server internal error case
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/StandardStatusResponsesError'
+    post:
+      tags:
+        - Product REST
+      summary:  create a new product
+      parameters:
+        - name: DTO
+          in: body
+          description: must be product DTO
+          required: true
+          schema:
+            $ref: '#/components/schemas/ProductDto'
+      responses:
+        201:
+          description: create success case
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/StandardStatusOkResponse'
+        400:
+          description: bad request case
+          content:
+            application/json:
+              schema: 
+               $ref: '#/components/schemas/StandardStatusResponsesError'
+
+        404:
+          description: not found case
+          content:
+            application/json:
+              schema: 
+               $ref: '#/components/schemas/StandardStatusResponsesError'
+        500:
+          description: server internal error case
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/StandardStatusResponsesError'
+  /products/search:
+    get:
+      tags:
+        - Product REST
+      summary: filtered search
+      description: searching by some parameters, like minimum, maximum prices and product name.
+      parameters:
+      - name: minPrice
+        in: query
+        type: string
+      - name: maxPrice
+        in: query
+        type: string
+      - name: product
+        in: query
+        type: string
+      responses:
+        200:
+          description:  success case
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/StandardStatusOkResponse'
+        400:
+          description: bad request case
+          content:
+            application/json:
+              schema: 
+               $ref: '#/components/schemas/StandardStatusResponsesError'
+
+        404:
+          description: not found case
+          content:
+            application/json:
+              schema: 
+               $ref: '#/components/schemas/StandardStatusResponsesError'
+        500:
+          description: server internal error case
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/StandardStatusResponsesError'
+  /products/{id}:      
+    get:
+      tags:
+        - Product REST
+      summary: find product by id
+      parameters: 
+      - in: path
+        name: ID
+        description: product id
+        schema:
+          type: integer
+          format: int64
+        required: true
+      responses:
+        200:
+          description:  success case
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/StandardStatusOkResponse'
+        400:
+          description: bad request case
+          content:
+            application/json:
+              schema: 
+               $ref: '#/components/schemas/StandardStatusResponsesError'
+
+        404:
+          description: not found case
+          content:
+            application/json:
+              schema: 
+               $ref: '#/components/schemas/StandardStatusResponsesError'
+        500:
+          description: server internal error case
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/StandardStatusResponsesError'
+    put:
+      tags:
+        - Product REST
+      summary: update product by id
+      parameters:
+      - name: ID
+        in: path
+        description: product id
+        required: true
+      - in: body
+        name: DTO
+        description: must be product DTO
+        required: true
+        schema:
+          $ref: '#components/schemas/ProductDto'
+      responses:
+        200:
+          description:  success case
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/StandardStatusOkResponse'
+        400:
+          description: bad request case
+          content:
+            application/json:
+              schema: 
+               $ref: '#/components/schemas/StandardStatusResponsesError'
+        404:
+          description: not found case
+          content:
+            application/json:
+              schema: 
+               $ref: '#/components/schemas/StandardStatusResponsesError'
+        500:
+          description: server internal error case
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/StandardStatusResponsesError'
+    delete:
+      tags:
+        - Product REST
+      summary: delete product by id
+      parameters: 
+      - name: ID
+        in: path
+        description: product id
+        required: true
+      responses:
+        204:
+          description:  no content case
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/StandardStatusOkResponse'
+        400:
+          description: bad request case
+          content:
+            application/json:
+              schema: 
+               $ref: '#/components/schemas/StandardStatusResponsesError'
+        404:
+          description: not found case
+          content:
+            application/json:
+              schema: 
+               $ref: '#/components/schemas/StandardStatusResponsesError'
+        500:
+          description: server internal error case
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/StandardStatusResponsesError'
+components:
+  schemas:
+    ProductDto:
+      type: object
+      properties:
+        name:
+          type: string
+        price:
+          type: number
+          format: double
+        description:
+          type: string
+    StandardStatusResponsesError:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        statusErrorCode:
+          type: integer
+          format: int64
+        messageError:
+          type: string
+        pathError:
+          type: string
+    StandardStatusOkResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        price:
+          type: number
+          format: double
+        description:
+          type: string  
+     
+
+    
