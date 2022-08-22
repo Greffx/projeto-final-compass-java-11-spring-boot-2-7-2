@@ -33,9 +33,6 @@ public class ProductServiceTest {
 	@Mock
 	private ProductRepository productRepository;
 
-	@Mock
-	private Product product;
-
 	@BeforeEach
 	void BeforeEachOneOfThoseTestsDoThisOneMethod() {
 		MockitoAnnotations.openMocks(this);
@@ -113,11 +110,11 @@ public class ProductServiceTest {
 	}
 	
 	private ProductDto productDtoForTest() {
-		Product justOneProduct = new Product(10L, "Coleira", 250.20, "Coleira para cachorro");
-		return new ProductDto(justOneProduct);
+		ProductDto product = new ProductDto(productForTest());
+		return product;
 	}
 
-	public Optional<Product> optionalProductForTest() {
+	private Optional<Product> optionalProductForTest() {
 		Optional<Product> optionalProduct = Optional.of(productForTest());
 		return optionalProduct;
 	}
