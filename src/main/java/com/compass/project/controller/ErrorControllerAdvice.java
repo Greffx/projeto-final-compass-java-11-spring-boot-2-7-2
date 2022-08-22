@@ -12,6 +12,7 @@ import javax.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -30,7 +31,8 @@ public class ErrorControllerAdvice {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}
 
-	@ExceptionHandler(value = { ConstraintViolationException.class, HttpMessageConversionException.class })
+	@ExceptionHandler(value = { ConstraintViolationException.class, HttpMessageConversionException.class,
+			HttpRequestMethodNotSupportedException.class })
 	public ResponseEntity<ErrorConfig> badRequestException(HttpServletRequest request) {
 		ErrorConfig error = new ErrorConfig(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "Bad Request",
 				request.getRequestURI());

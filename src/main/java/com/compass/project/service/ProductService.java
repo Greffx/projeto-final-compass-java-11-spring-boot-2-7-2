@@ -35,7 +35,8 @@ public class ProductService {
 	}
 
 	@SuppressWarnings("deprecation")
-	public Product updateProduct(Long id, Product product) {
+	public Product updateProduct(Long id, ProductDto product) {
+		
 		Product productThatWillBeChanged = productRepository.getById(id);
 
 		if (productThatWillBeChanged != null) {

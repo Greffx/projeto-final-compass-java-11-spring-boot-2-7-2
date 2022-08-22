@@ -93,11 +93,12 @@ public class ProductServiceTest {
 	void endPointUpdateShouldReturnProductWithOtherAtributes() {
 		Optional<Product> optionalProduct = optionalProductForTest();
 		Product product = productForTest();
+		ProductDto productDto = productDtoForTest();
 		
 		when(productRepository.save(any())).thenReturn(product);
 		when(productRepository.findById(anyLong())).thenReturn(optionalProduct);
 		
-		Product result = productService.updateProduct(10L, product);
+		Product result = productService.updateProduct(10L, productDto);
 
 		assertNotNull(result);
 		assertEquals(Product.class, result.getClass());
