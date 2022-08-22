@@ -19,13 +19,11 @@ public class ProductControllerTest {
 	private MockMvc mockMvc;
 
 	@Test
-	void shouldReturnStatusCreated() throws Exception {
-		String product = "{\"name\":\"ProductTest\",\"price\":\"10.20\",\"description\":\"Product_test\"}";
-		
+	void shouldReturnStatusCreated() throws Exception {		
 		mockMvc
 		.perform(MockMvcRequestBuilders
 				.post(uriContent())
-				.content(product)
+				.content(productTest())
 				.contentType(MediaType.APPLICATION_JSON))
 		.andExpect(MockMvcResultMatchers
 				.status()
@@ -57,11 +55,10 @@ public class ProductControllerTest {
 	
 	@Test
 	void shouldByIdReturnOkStatus() throws Exception {
-		String product = "{\"name\":\"ProductTest\",\"price\":\"10.20\",\"description\":\"Product_test\"}";
 		mockMvc
 		.perform(MockMvcRequestBuilders
 				.get(uriContentById())
-				.content(product)
+				.content(productTest())
 				.contentType(MediaType.APPLICATION_JSON))
 		.andExpect(MockMvcResultMatchers
 				.status()
@@ -70,11 +67,10 @@ public class ProductControllerTest {
 	
 	@Test
 	void whenUpdateAProductByIdReturnOkStatus() throws Exception {
-		String product = "{\"name\":\"ProductTest\",\"price\":\"10.20\",\"description\":\"Product_test\"}";
 		mockMvc
 		.perform(MockMvcRequestBuilders
 				.put(uriContentById())
-				.content(product)
+				.content(productTest())
 				.contentType(MediaType.APPLICATION_JSON))
 		.andExpect(MockMvcResultMatchers
 				.status()
@@ -89,5 +85,10 @@ public class ProductControllerTest {
 	private URI uriContentById() throws Exception {
 		URI uri = new URI("/products/1");
 		return uri;
+	}
+	
+	private String productTest() {
+		String product = "{\"name\":\"ProductTest\",\"price\":\"10.20\",\"description\":\"Product_test\"}";
+		return product;
 	}
 }

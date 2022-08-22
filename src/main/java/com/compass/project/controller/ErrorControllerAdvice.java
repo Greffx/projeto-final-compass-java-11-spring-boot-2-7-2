@@ -12,6 +12,7 @@ import javax.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -32,14 +33,14 @@ public class ErrorControllerAdvice {
 	}
 
 	@ExceptionHandler(value = { ConstraintViolationException.class, HttpMessageConversionException.class,
-			HttpRequestMethodNotSupportedException.class })
+			HttpRequestMethodNotSupportedException.class, HttpMessageNotReadableException.class })
 	public ResponseEntity<ErrorConfig> badRequestException(HttpServletRequest request) {
 		ErrorConfig error = new ErrorConfig(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "Bad Request",
 				request.getRequestURI());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 	}
 
-	@ExceptionHandler(value = MethodArgumentTypeMismatchException.class)
+	@ExceptionHandler(value = MethodArgumentTypeMismatchException.class )
 	public ResponseEntity<ErrorConfig> internalErrorServerException(HttpServletRequest request) {
 		ErrorConfig error = new ErrorConfig(LocalDateTime.now(), HttpStatus.INTERNAL_SERVER_ERROR.value(),
 				"Internal Server Error", request.getRequestURI());
