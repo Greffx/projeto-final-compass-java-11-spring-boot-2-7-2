@@ -54,7 +54,7 @@ public class SwaggerConfig {
 
 			{
 				add(new ResponseMessageBuilder().code(500).message("Internal Server Error")
-						.responseModel(new ModelRef("ResponseStatusAndMessage")).build());
+						.responseModel(new ModelRef("Error")).build());
 				add(new ResponseMessageBuilder().code(404).message("Not Found").build());
 				add(new ResponseMessageBuilder().code(201).message("Created").build());
 				add(new ResponseMessageBuilder().code(400).message("Bad Request").build());
@@ -69,7 +69,7 @@ public class SwaggerConfig {
 
 			{
 				add(new ResponseMessageBuilder().code(500).message("Internal Server Error")
-						.responseModel(new ModelRef("ResponseStatusAndMessage")).build());
+						.responseModel(new ModelRef("Error")).build());
 				add(new ResponseMessageBuilder().code(404).message("Not Found").build());
 				add(new ResponseMessageBuilder().code(204).message("No Content").build());
 				add(new ResponseMessageBuilder().code(400).message("Bad Request").build());
