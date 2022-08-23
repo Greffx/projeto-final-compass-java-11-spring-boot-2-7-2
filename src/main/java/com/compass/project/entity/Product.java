@@ -28,7 +28,7 @@ public class Product {
 	
 	@NotNull
 	@NotEmpty
-	@Length(min = 10)
+	@Length(min = 5)
 	private String description;
 
 	public Product() {
