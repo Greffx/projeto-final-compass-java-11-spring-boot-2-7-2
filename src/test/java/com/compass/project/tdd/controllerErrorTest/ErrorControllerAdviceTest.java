@@ -23,38 +23,29 @@ public class ErrorControllerAdviceTest {
 		String product = "{\"name\":\"\",\"price\":\"10.20\",\"description\":\"Product_test\"}";
 
 		mockMvc.perform(
-				MockMvcRequestBuilders.post(uriContent())
-				.content(product)
-				.contentType(MediaType.APPLICATION_JSON))
+				MockMvcRequestBuilders.post(uriContent()).content(product).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().is(400));
 	}
-	
+
 	@Test
 	void shouldReturnNotFoundCode() throws Exception {
-		mockMvc.perform(
-				MockMvcRequestBuilders.get(uriContentById())
-				.contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(MockMvcRequestBuilders.get(uriContentById()).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().is(404));
 	}
-	
+
 	@Test
 	void shouldReturnInternalErrorCode() throws Exception {
 		String product = "{\"name\":\"ProductTest\",\"price\":\"10.20\",\"description\":\"Product_test\"}";
-		mockMvc
-		.perform(MockMvcRequestBuilders
-				.put("/products/a")
-				.content(product)
-				.contentType(MediaType.APPLICATION_JSON))
-		.andExpect(MockMvcResultMatchers
-				.status()
-				.is(500));
+		mockMvc.perform(
+				MockMvcRequestBuilders.post("/products/a").content(product).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().is(500));
 	}
-	
+
 	private URI uriContent() throws Exception {
 		URI uri = new URI("/products");
 		return uri;
 	}
-	
+
 	private URI uriContentById() throws Exception {
 		URI uri = new URI("/products/12");
 		return uri;

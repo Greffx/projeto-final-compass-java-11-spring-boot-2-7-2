@@ -75,9 +75,10 @@ public class ProductServiceTest {
 	@Test
 	void endPointCreateShouldReturnNewProduct() {
 		Product product = productForTest();
+		ProductDto productDto = productDtoForTest();
 		
 		when(productRepository.save(any())).thenReturn(product);
-		Product result = productService.insertNewProduct(productDtoForTest());
+		Product result = productService.insertNewProduct(productDto);
 
 		assertNotNull(result);
 		assertEquals(Product.class, result.getClass());

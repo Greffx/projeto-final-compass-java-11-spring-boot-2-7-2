@@ -33,14 +33,14 @@ public class ErrorControllerAdvice {
 	}
 
 	@ExceptionHandler(value = { ConstraintViolationException.class, HttpMessageConversionException.class,
-			HttpRequestMethodNotSupportedException.class, HttpMessageNotReadableException.class })
+			MethodArgumentTypeMismatchException.class })
 	public ResponseEntity<ErrorConfig> badRequestException(HttpServletRequest request) {
 		ErrorConfig error = new ErrorConfig(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "Bad Request",
 				request.getRequestURI());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 	}
 
-	@ExceptionHandler(value = MethodArgumentTypeMismatchException.class )
+	@ExceptionHandler(value = { HttpRequestMethodNotSupportedException.class, HttpMessageNotReadableException.class })
 	public ResponseEntity<ErrorConfig> internalErrorServerException(HttpServletRequest request) {
 		ErrorConfig error = new ErrorConfig(LocalDateTime.now(), HttpStatus.INTERNAL_SERVER_ERROR.value(),
 				"Internal Server Error", request.getRequestURI());
