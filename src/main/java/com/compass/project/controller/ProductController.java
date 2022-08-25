@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.compass.project.entity.Product;
 import com.compass.project.entity.dto.ProductDto;
 import com.compass.project.service.ProductService;
 
@@ -29,8 +28,7 @@ public class ProductController {
 
 	@GetMapping
 	public ResponseEntity<List<ProductDto>> listOfAllProducts() {
-		List<Product> listOfAllProducts = productService.getListOfAllProducts();
-		return ResponseEntity.ok().body(ProductDto.convertToDto(listOfAllProducts));
+		return ResponseEntity.ok().body(ProductDto.convertToDto(productService.getListOfAllProducts()));
 	}
 
 	@GetMapping("/search")
@@ -49,16 +47,14 @@ public class ProductController {
 
 	@PostMapping
 	public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
-		Product createdProduct = productService.insertNewProduct(productDto);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdProduct.getId())
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(productService.insertNewProduct(productDto))
 				.toUri();
-		return ResponseEntity.created(uri).body(new ProductDto(createdProduct));
+		return ResponseEntity.created(uri).body(new ProductDto(productService.insertNewProduct(productDto)));
 	}
  
 	@PutMapping("/{id}")
 	public ResponseEntity<ProductDto> updateProduct(@PathVariable Long id, @RequestBody ProductDto productDto) {
-		Product product = productService.updateProduct(id, productDto);
-		return ResponseEntity.ok().body(new ProductDto(product));
+		return ResponseEntity.ok().body(new ProductDto(productService.updateProduct(id, productDto)));
 	}
 
 	@DeleteMapping("/{id}")

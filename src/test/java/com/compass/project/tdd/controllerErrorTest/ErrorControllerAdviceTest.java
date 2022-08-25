@@ -18,6 +18,16 @@ public class ErrorControllerAdviceTest {
 	@Autowired
 	private MockMvc mockMvc;
 
+	private URI uriContent() throws Exception {
+		URI uri = new URI("/products");
+		return uri;
+	}
+
+	private URI uriContentById() throws Exception {
+		URI uri = new URI("/products/12");
+		return uri;
+	}
+
 	@Test
 	void shouldReturnBadRequestCode() throws Exception {
 		String product = "{\"name\":\"\",\"price\":\"10.20\",\"description\":\"Product_test\"}";
@@ -39,15 +49,5 @@ public class ErrorControllerAdviceTest {
 		mockMvc.perform(
 				MockMvcRequestBuilders.post("/products/a").content(product).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().is(500));
-	}
-
-	private URI uriContent() throws Exception {
-		URI uri = new URI("/products");
-		return uri;
-	}
-
-	private URI uriContentById() throws Exception {
-		URI uri = new URI("/products/12");
-		return uri;
 	}
 }

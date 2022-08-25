@@ -33,6 +33,21 @@ public class ProductServiceTest {
 	@Mock
 	private ProductRepository productRepository;
 
+	private Product productForTest() {
+		Product justOneProduct = new Product(10L, "Coleira", 250.20, "Coleira para cachorro");
+		return justOneProduct;
+	}
+
+	private ProductDto productDtoForTest() {
+		ProductDto product = new ProductDto(productForTest());
+		return product;
+	}
+
+	private Optional<Product> optionalProductForTest() {
+		Optional<Product> optionalProduct = Optional.of(productForTest());
+		return optionalProduct;
+	}
+
 	@BeforeEach
 	void BeforeEachOneOfThoseTestsDoThisOneMethod() {
 		MockitoAnnotations.openMocks(this);
@@ -76,7 +91,7 @@ public class ProductServiceTest {
 	void endPointCreateShouldReturnNewProduct() {
 		Product product = productForTest();
 		ProductDto productDto = productDtoForTest();
-		
+
 		when(productRepository.save(any())).thenReturn(product);
 		Product result = productService.insertNewProduct(productDto);
 
@@ -86,16 +101,16 @@ public class ProductServiceTest {
 		assertEquals("Coleira", result.getName());
 
 	}
-	 
+
 	@Test
 	void endPointUpdateShouldReturnProductWithOtherAtributes() {
 		Optional<Product> optionalProduct = optionalProductForTest();
 		Product product = productForTest();
 		ProductDto productDto = productDtoForTest();
-		
+
 		when(productRepository.save(any())).thenReturn(product);
 		when(productRepository.findById(anyLong())).thenReturn(optionalProduct);
-		
+
 		Product result = productService.updateProduct(10L, productDto);
 
 		assertNotNull(result);
@@ -103,20 +118,5 @@ public class ProductServiceTest {
 		assertEquals(10L, result.getId());
 		assertEquals("Coleira", result.getName());
 
-	}
-
-	private Product productForTest() {
-		Product justOneProduct = new Product(10L, "Coleira", 250.20, "Coleira para cachorro");
-		return justOneProduct;
-	}
-	
-	private ProductDto productDtoForTest() {
-		ProductDto product = new ProductDto(productForTest());
-		return product;
-	}
-
-	private Optional<Product> optionalProductForTest() {
-		Optional<Product> optionalProduct = Optional.of(productForTest());
-		return optionalProduct;
 	}
 }

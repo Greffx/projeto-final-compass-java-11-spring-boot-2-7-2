@@ -18,77 +18,48 @@ public class ProductControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
-	@Test
-	void shouldReturnStatusCreated() throws Exception {		
-		mockMvc
-		.perform(MockMvcRequestBuilders
-				.post(uriContent())
-				.content(productTest())
-				.contentType(MediaType.APPLICATION_JSON))
-		.andExpect(MockMvcResultMatchers
-				.status()
-				.is(201));
-	}
-	
-	@Test
-	void shouldReturnNoContent() throws Exception {
-		mockMvc
-		.perform(MockMvcRequestBuilders
-				.delete(uriContentById())
-				.contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON))
-		.andExpect(MockMvcResultMatchers
-				.status()
-				.is(204));
-	}
-	
-	@Test
-	void shouldReturnOkStatus() throws Exception {
-		mockMvc
-		.perform(MockMvcRequestBuilders
-				.get(uriContent())
-				.contentType(MediaType.APPLICATION_JSON))
-		.andExpect(MockMvcResultMatchers
-				.status()
-				.is(200));
-	}
-	
-	@Test
-	void shouldByIdReturnOkStatus() throws Exception {
-		mockMvc
-		.perform(MockMvcRequestBuilders
-				.get(uriContentById())
-				.content(productTest())
-				.contentType(MediaType.APPLICATION_JSON))
-		.andExpect(MockMvcResultMatchers
-				.status()
-				.is(200));
-	}
-	
-	@Test
-	void whenUpdateAProductByIdReturnOkStatus() throws Exception {
-		mockMvc
-		.perform(MockMvcRequestBuilders
-				.put(uriContentById())
-				.content(productTest())
-				.contentType(MediaType.APPLICATION_JSON))
-		.andExpect(MockMvcResultMatchers
-				.status()
-				.is(200));
-	}
-	
 	private URI uriContent() throws Exception {
 		URI uri = new URI("/products");
 		return uri;
 	}
-	
+
 	private URI uriContentById() throws Exception {
 		URI uri = new URI("/products/1");
 		return uri;
 	}
-	
+
 	private String productTest() {
 		String product = "{\"name\":\"ProductTest\",\"price\":\"10.20\",\"description\":\"Product_test\"}";
 		return product;
+	}
+
+	@Test
+	void shouldReturnStatusCreated() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.post(uriContent()).content(productTest())
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().is(201));
+	}
+
+	@Test
+	void shouldReturnNoContent() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.delete(uriContentById()).contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().is(204));
+	}
+
+	@Test
+	void shouldReturnOkStatus() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get(uriContent()).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().is(200));
+	}
+
+	@Test
+	void shouldByIdReturnOkStatus() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get(uriContentById()).content(productTest())
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().is(200));
+	}
+
+	@Test
+	void whenUpdateAProductByIdReturnOkStatus() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.put(uriContentById()).content(productTest())
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().is(200));
 	}
 }
