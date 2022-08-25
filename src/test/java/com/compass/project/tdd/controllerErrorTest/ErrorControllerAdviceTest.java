@@ -27,13 +27,17 @@ public class ErrorControllerAdviceTest {
 		URI uri = new URI("/products/12");
 		return uri;
 	}
+	
+	private URI uriContentByIdWithLetter() throws Exception {
+		URI uri = new URI("/products/12a");
+		return uri;
+	}
 
 	@Test
 	void shouldReturnBadRequestCode() throws Exception {
-		String product = "{\"name\":\"\",\"price\":\"10.20\",\"description\":\"Product_test\"}";
 
 		mockMvc.perform(
-				MockMvcRequestBuilders.post(uriContent()).content(product).contentType(MediaType.APPLICATION_JSON))
+				MockMvcRequestBuilders.delete(uriContentByIdWithLetter()).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().is(400));
 	}
 
@@ -47,7 +51,7 @@ public class ErrorControllerAdviceTest {
 	void shouldReturnInternalErrorCode() throws Exception {
 		String product = "{\"name\":\"ProductTest\",\"price\":\"10.20\",\"description\":\"Product_test\"}";
 		mockMvc.perform(
-				MockMvcRequestBuilders.post("/products/a").content(product).contentType(MediaType.APPLICATION_JSON))
+				MockMvcRequestBuilders.put(uriContent()).content(product).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().is(500));
 	}
 }

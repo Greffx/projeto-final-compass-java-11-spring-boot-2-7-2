@@ -4,10 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Length;
 
 import com.compass.project.entity.dto.ProductDto;
 
@@ -17,18 +13,11 @@ public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@NotNull
-	@NotEmpty
-	@Length(min = 2)
+
 	private String name;
-	
-	@NotNull
+
 	private Double price;
-	
-	@NotNull
-	@NotEmpty
-	@Length(min = 5)
+
 	private String description;
 
 	public Product() {
@@ -40,7 +29,7 @@ public class Product {
 		this.price = price;
 		this.description = description;
 	}
-	
+
 	public Product(ProductDto product) {
 		this.id = product.getId();
 		this.name = product.getName();

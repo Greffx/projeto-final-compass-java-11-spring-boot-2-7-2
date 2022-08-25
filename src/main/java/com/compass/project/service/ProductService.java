@@ -47,20 +47,6 @@ public class ProductService {
 		return productRepository.save(productThatWillBeChanged);
 	}
  
-	public List<Product> listOfGreaterAndLowerPriceAndNameProduct(Double minPrice, Double maxPrice, String name) {
-		if (minPrice == null && maxPrice == null) {
-			return productRepository.filterByName(name);
-		} else if (minPrice == null && name == null) {
-			return productRepository.filterByPriceLessThan(maxPrice);
-		} else if (maxPrice == null && name == null) {
-			return productRepository.filterByPriceGreaterThan(minPrice);
-		} else if (name == null) {
-			return productRepository.filterByMinMaxPrice(minPrice, maxPrice);
-		} else if (minPrice == null) {
-			return productRepository.filterByMaxPriceAndName(maxPrice, name);
-		} else if (maxPrice == null) {
-			return productRepository.filterByMinPriceAndName(minPrice, name);
-		}
-		return productRepository.filterByPriceAndName(minPrice, maxPrice, name);
-	}
+//	public List<Product> listOfGreaterAndLowerPriceAndNameProduct(Double minPrice, Double maxPrice, String name) {
+//	}
 }

@@ -6,14 +6,23 @@ public class ErrorConfig {
 
 	private LocalDateTime date;
 	private Integer StatusError;
-	private String messageError;
 	private String pathError;
-
-	public ErrorConfig(LocalDateTime date, Integer statusError, String messageError, String pathError) {
+	private String field;
+	private String messageError;
+	
+	public ErrorConfig(LocalDateTime date, Integer statusError, String pathError, String messageError) {
 		this.date = date;
 		StatusError = statusError;
-		this.messageError = messageError;
 		this.pathError = pathError;
+		this.messageError = messageError;
+	}
+	
+	public ErrorConfig(LocalDateTime date, Integer statusError, String pathError, String field, String messageError) {
+		this.date = date;
+		StatusError = statusError;
+		this.pathError = pathError;
+		this.field = field;
+		this.messageError = messageError;
 	}
 
 	public LocalDateTime getDate() {
@@ -48,4 +57,12 @@ public class ErrorConfig {
 		this.pathError = pathError;
 	}
 
+	public String getField() {
+		return field;
+	}
+
+	public void setField(String field) {
+		this.field = field;
+	}
+	
 }
