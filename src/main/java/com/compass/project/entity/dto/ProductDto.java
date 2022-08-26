@@ -1,12 +1,10 @@
 package com.compass.project.entity.dto;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.domain.Page;
 
 import com.compass.project.entity.Product;
 
@@ -21,7 +19,7 @@ public class ProductDto {
 
 	@NotNull
 	private Double price;
-	
+
 	@NotNull
 	@NotEmpty
 	@Length(min = 5)
@@ -53,7 +51,7 @@ public class ProductDto {
 		return price;
 	}
 
-	public static List<ProductDto> convertToDto(List<Product> products) {
-		return products.stream().map(ProductDto::new).collect(Collectors.toList());
+	public static Page<ProductDto> convertToDto(Page<Product> products) {
+		return products.map(ProductDto::new);
 	}
 }

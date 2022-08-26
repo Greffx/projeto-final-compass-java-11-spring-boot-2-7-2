@@ -53,17 +53,17 @@ public class ProductServiceTest {
 		MockitoAnnotations.openMocks(this);
 	}
 
-	@Test
-	void methodGetListOfAllProductsShouldReturnAListOfProdcuts() {
-		Product product = productForTest();
-		Product product1 = productForTest();
-
-		when(productService.getListOfAllProducts()).thenReturn(List.of(product, product1));
-		List<Product> result = productService.getListOfAllProducts();
-
-		assertNotNull(result);
-		assertEquals(2, result.size());
-	}
+//	@Test
+//	void methodGetListOfAllProductsShouldReturnAListOfProdcuts() {
+//		Product product = productForTest();
+//		Product product1 = productForTest();
+//
+//		when(productService.getListOfAllProducts()).thenReturn(List.of(product, product1));
+//		List<Product> result = productService.getListOfAllProducts();
+//
+//		assertNotNull(result);
+//		assertEquals(2, result.size());
+//	}
 
 	@Test
 	void endPointShouldGetProductByIdUsingMethodFromRepositoryCrud() {

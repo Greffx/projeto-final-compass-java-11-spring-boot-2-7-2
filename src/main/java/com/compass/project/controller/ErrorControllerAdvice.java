@@ -17,6 +17,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -30,14 +31,29 @@ public class ErrorControllerAdvice {
 	@ExceptionHandler(value = { EntityNotFoundException.class, NoSuchFieldException.class,
 			EmptyResultDataAccessException.class, NoSuchElementException.class })
 	public ResponseEntity<ErrorConfig> nullException(HttpServletRequest request, Exception ex) {
-		ErrorConfig error = new ErrorConfig(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "Not Found: Id null",
-				"Id", request.getRequestURI());
+		ErrorConfig error = new ErrorConfig(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), request.getRequestURI(),
+				"URL", "Not Found: Missing or Invalid parameters");
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 
 	}
 
+	@ExceptionHandler(value = { ConstraintViolationException.class, HttpMessageConversionException.class,
+			MethodArgumentTypeMismatchException.class, MissingServletRequestParameterException.class })
+	public ResponseEntity<ErrorConfig> badRequestException(HttpServletRequest request, Exception ex) {
+		ErrorConfig error = new ErrorConfig(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(),
+				request.getRequestURI(), "URL", "Bad Request: Missing or Invalid parameters");
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+	}
+
+	@ExceptionHandler(value = { HttpRequestMethodNotSupportedException.class, HttpMessageNotReadableException.class })
+	public ResponseEntity<ErrorConfig> internalErrorServerException(HttpServletRequest request, Exception ex) {
+		ErrorConfig error = new ErrorConfig(LocalDateTime.now(), HttpStatus.INTERNAL_SERVER_ERROR.value(),
+				request.getRequestURI(), "URL", "Internal Error: Missing or Invalid parameters");
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+	}
+
 	@ExceptionHandler(value = { MethodArgumentNotValidException.class })
-	public ResponseEntity<List<ErrorConfig>> putHandler(HttpServletRequest request,
+	public ResponseEntity<List<ErrorConfig>> putAndPostException(HttpServletRequest request,
 			MethodArgumentNotValidException ex) {
 		List<ErrorConfig> errorsList = new ArrayList<>();
 		List<FieldError> fields = ex.getBindingResult().getFieldErrors();
@@ -48,21 +64,5 @@ public class ErrorControllerAdvice {
 			errorsList.add(error);
 		});
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorsList);
-	}
-
-	@ExceptionHandler(value = { ConstraintViolationException.class, HttpMessageConversionException.class,
-			MethodArgumentTypeMismatchException.class })
-	public ResponseEntity<ErrorConfig> badRequestException(HttpServletRequest request, Exception ex) {
-		ErrorConfig error = new ErrorConfig(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(),
-				request.getRequestURI(), "Id", "Bad Request: " + "Id invalid");
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-	}
-
-	@ExceptionHandler(value = { HttpRequestMethodNotSupportedException.class, HttpMessageNotReadableException.class })
-	public ResponseEntity<ErrorConfig> internalErrorServerException(HttpServletRequest request, Exception ex) {
-		String message = ex.getMessage();
-		ErrorConfig error = new ErrorConfig(LocalDateTime.now(), HttpStatus.INTERNAL_SERVER_ERROR.value(),
-				request.getRequestURI(), "Id", "Internal Server Error: " + message);
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
 	}
 }
