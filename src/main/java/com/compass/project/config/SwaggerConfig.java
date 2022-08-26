@@ -21,7 +21,7 @@ public class SwaggerConfig {
 	public Docket productDocumentation() {
 		return new Docket(DocumentationType.SWAGGER_2).select()
 				.apis(RequestHandlerSelectors.basePackage("com.compass.project")).paths(PathSelectors.any())
-				.build().apiInfo(infoAboutApiProduct()).useDefaultResponseMessages(false).ignoredParameterTypes(Product.class);
+				.build().apiInfo(infoAboutApiProduct()).useDefaultResponseMessages(false).globalOperationParameters(null).ignoredParameterTypes(Product.class);
 
 	}
 

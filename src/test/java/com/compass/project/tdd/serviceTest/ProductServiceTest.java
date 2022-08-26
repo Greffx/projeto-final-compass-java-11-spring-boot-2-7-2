@@ -42,6 +42,20 @@ public class ProductServiceTest {
 		return justOneProduct;
 	}
 
+	private List<Product> listOfProducts() {
+
+		List<Product> products = new ArrayList<>();
+
+		Product product1 = new Product(15L, "Coleira", 10.20, "Coleira para cachorro");
+		Product product2 = new Product(16L, "Panela", 250.00, "Panela de aço");
+		Product product3 = new Product(17L, "Cadeira de Couro", 450.50, "Cadeira de patrão, super confortável");
+		products.add(product1);
+		products.add(product2);
+		products.add(product3);
+
+		return products;
+	}
+
 	private ProductDto productDtoForTest() {
 		ProductDto product = new ProductDto(productForTest());
 		return product;
@@ -58,16 +72,38 @@ public class ProductServiceTest {
 	}
 
 	@Test
-	void methodGetListOfAllProductsShouldReturnAListOfProdcuts() {
-		List<Product> products = new ArrayList<>();
-		products.add(productForTest());
-		products.add(productForTest());
-		PageRequest pageable = PageRequest.of(0, 5);
-		Page<Product> pageProduct = new PageImpl<>(products, pageable, products.size());
-		when(productService.getListOfAllProducts(pageable)).thenReturn(pageProduct);
+	void methodlistOfGreaterAndLowerPriceAndNameProductShouldReturnAListOfProdcuts() {
+		PageRequest pageable = PageRequest.of(0, 2);//which page he is and how many products he wants
+		Page<Product> pageWithProduct = new PageImpl<>(listOfProducts(), pageable, listOfProducts().size());
+		when(productService.listOfGreaterAndLowerPriceAndNameProduct(any(), any(), any(), any())).thenReturn(pageWithProduct);
+		
+		assertNotNull(pageWithProduct);
+		assertEquals(2, pageWithProduct.getSize());
+		assertEquals(0, pageable.getPageNumber());
+		assertEquals(2, pageWithProduct.getTotalPages());
+	}
+	
+	@Test
+	void methodlistOfGreaterAndLowerPriceAndNameProductShouldReturnAListOfProdcutsWithOnlyOneParam() {
+		PageRequest pageable = PageRequest.of(0, 1);//which page he is and how many products he wants
+		Page<Product> pageWithProduct = new PageImpl<>(listOfProducts(), pageable, listOfProducts().size());
+		when(productService.listOfGreaterAndLowerPriceAndNameProduct(400.0, 500.0, "", pageable)).thenReturn(pageWithProduct);
+		
+		assertNotNull(pageWithProduct);
+		assertEquals(1, pageWithProduct.getSize());
+		assertEquals(0, pageable.getPageNumber());
+		assertEquals(PageImpl.class, pageWithProduct.getClass());
+	}
 
-		assertNotNull(pageProduct);
-		assertEquals(2, products.size());
+	@Test
+	void methodGetListOfAllProductsShouldReturnAListOfProdcuts() {
+		PageRequest pageable = PageRequest.of(0, 5);
+		Page<Product> pageWithProduct = new PageImpl<>(listOfProducts(), pageable, listOfProducts().size());
+
+		when(productService.getListOfAllProducts(pageable)).thenReturn(pageWithProduct);
+
+		assertNotNull(pageWithProduct);
+		assertEquals(3, listOfProducts().size());
 	}
 
 	@Test
