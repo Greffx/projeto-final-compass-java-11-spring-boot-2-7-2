@@ -1,6 +1,5 @@
 package com.compass.project.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +48,8 @@ public class ProductService {
 		return productRepository.save(productThatWillBeChanged);
 	}
 
-	public List<Product> listOfGreaterAndLowerPriceAndNameProduct(Double minPrice, Double maxPrice, String name) {
-		return productRepository.listOfGreaterAndLowerPriceAndNameProduct(minPrice, maxPrice, name);
+	public Page<Product> listOfGreaterAndLowerPriceAndNameProduct(Double minPrice, Double maxPrice, String name,
+			Pageable pageable) {
+		return productRepository.listOfGreaterAndLowerPriceAndNameProduct(minPrice, maxPrice, name, pageable);
 	}
 }

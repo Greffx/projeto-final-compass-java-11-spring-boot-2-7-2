@@ -9,6 +9,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import com.compass.project.entity.Product;
 import com.compass.project.entity.dto.ProductDto;
@@ -53,17 +57,18 @@ public class ProductServiceTest {
 		MockitoAnnotations.openMocks(this);
 	}
 
-//	@Test
-//	void methodGetListOfAllProductsShouldReturnAListOfProdcuts() {
-//		Product product = productForTest();
-//		Product product1 = productForTest();
-//
-//		when(productService.getListOfAllProducts()).thenReturn(List.of(product, product1));
-//		List<Product> result = productService.getListOfAllProducts();
-//
-//		assertNotNull(result);
-//		assertEquals(2, result.size());
-//	}
+	@Test
+	void methodGetListOfAllProductsShouldReturnAListOfProdcuts() {
+		List<Product> products = new ArrayList<>();
+		products.add(productForTest());
+		products.add(productForTest());
+		PageRequest pageable = PageRequest.of(0, 5);
+		Page<Product> pageProduct = new PageImpl<>(products, pageable, products.size());
+		when(productService.getListOfAllProducts(pageable)).thenReturn(pageProduct);
+
+		assertNotNull(pageProduct);
+		assertEquals(2, products.size());
+	}
 
 	@Test
 	void endPointShouldGetProductByIdUsingMethodFromRepositoryCrud() {

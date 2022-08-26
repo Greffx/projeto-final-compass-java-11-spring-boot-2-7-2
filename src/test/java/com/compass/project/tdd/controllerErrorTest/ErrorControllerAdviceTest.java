@@ -24,7 +24,7 @@ public class ErrorControllerAdviceTest {
 	}
 
 	private URI uriContentById() throws Exception {
-		URI uri = new URI("/products/12");
+		URI uri = new URI("/products/122");
 		return uri;
 	}
 	

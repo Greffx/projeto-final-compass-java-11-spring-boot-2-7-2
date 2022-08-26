@@ -1,14 +1,15 @@
 package com.compass.project.controller;
 
 import java.net.URI;
-import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,36 +21,71 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.compass.project.entity.Product;
 import com.compass.project.entity.dto.ProductDto;
 import com.compass.project.service.ProductService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping("/products")
+@Api("API REST Product")
+@CrossOrigin(origins = "*")
 public class ProductController {
 
 	@Autowired
 	private ProductService productService;
 
 	@GetMapping
-	public ResponseEntity<Page<ProductDto>> listOfAllProducts(Pageable pageable) {
+	@ApiOperation("Return a list of all products")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Return a list of products filtered by search parameters"), 
+			@ApiResponse(code = 400, message = "Return URL, message and code error"),
+			@ApiResponse(code = 404, message = "Return URL, message and code error"),
+			@ApiResponse(code = 500, message = "Return URL, message and code error"),
+	})
+	public ResponseEntity<Page<ProductDto>> listOfAllProducts(@PageableDefault(page = 0, size = 5) Pageable pageable) {
 		return ResponseEntity.ok().body(ProductDto.convertToDto(productService.getListOfAllProducts(pageable)));
 	}
 
 	@GetMapping("/search")
-	public ResponseEntity<List<Product>> listWithParam(
-		@RequestParam(name = "minPrice", required = false) Double minPrice,
+	@ApiOperation("Return a list of products filtered by parameters")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Return a list of products filtered by search parameters"), 
+			@ApiResponse(code = 400, message = "Return URL, message and code error"),
+			@ApiResponse(code = 404, message = "Return URL, message and code error"),
+			@ApiResponse(code = 500, message = "Return URL, message and code error"),
+	})
+	public ResponseEntity<Page<ProductDto>> listWithParam(
+			@RequestParam(name = "minPrice", required = false) Double minPrice,
 			@RequestParam(name = "maxPrice", required = false) Double maxPrice,
-			@RequestParam(name = "product", required = false) String name) {
-		return ResponseEntity.ok().body(productService.listOfGreaterAndLowerPriceAndNameProduct(minPrice, maxPrice, name));
+			@RequestParam(name = "product", required = false) String name, @PageableDefault(page = 0, size = 5) Pageable pageable) {
+		return ResponseEntity.ok().body(ProductDto.convertToDto(
+				productService.listOfGreaterAndLowerPriceAndNameProduct(minPrice, maxPrice, name, pageable)));
 	}
 
 	@GetMapping("/{id}")
+	@ApiOperation("Return only one product by id")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Return a product"), 
+			@ApiResponse(code = 400, message = "Return URL, message and code error"),
+			@ApiResponse(code = 404, message = "Return URL, message and code error"),
+			@ApiResponse(code = 500, message = "Return URL, message and code error"),
+	})
 	public ResponseEntity<ProductDto> onlyOneProductById(@PathVariable Long id) {
 		return ResponseEntity.ok().body(new ProductDto(productService.getProductById(id)));
 	}
 
 	@PostMapping
+	@ApiOperation("Create a new product")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Return a product"), 
+			@ApiResponse(code = 400, message = "Return field, message and code error"),
+			@ApiResponse(code = 404, message = "Return URL, message and code error"),
+			@ApiResponse(code = 500, message = "Return URL, message and code error"),
+	})
 	public ResponseEntity<ProductDto> createProduct(@RequestBody @Valid ProductDto productDto) {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(productService.insertNewProduct(productDto)).toUri();
@@ -57,11 +93,25 @@ public class ProductController {
 	}
 
 	@PutMapping("/{id}")
+	@ApiOperation("Update a product by id")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Return a updated product"), 
+			@ApiResponse(code = 400, message = "Return field, message and code error"),
+			@ApiResponse(code = 404, message = "Return URL, message and code error"),
+			@ApiResponse(code = 500, message = "Return URL, message and code error"),
+	})
 	public ResponseEntity<ProductDto> updateProduct(@PathVariable Long id, @RequestBody @Valid ProductDto productDto) {
 		return ResponseEntity.ok().body(new ProductDto(productService.updateProduct(id, productDto)));
 	}
 
 	@DeleteMapping("/{id}")
+	@ApiOperation("Delete a product by id")
+	@ApiResponses(value = {
+			@ApiResponse(code = 204, message = "Return status but with no content"), 
+			@ApiResponse(code = 400, message = "Return URL, message and code error"),
+			@ApiResponse(code = 404, message = "Return URL, message and code error"),
+			@ApiResponse(code = 500, message = "Return URL, message and code error"),
+	})
 	public ResponseEntity<ProductDto> deleteProduct(@PathVariable Long id) {
 		productService.deleteProduct(id);
 		return ResponseEntity.noContent().build();
