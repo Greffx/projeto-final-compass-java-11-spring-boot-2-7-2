@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.mapping.PropertyReferenceException;
+
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
@@ -29,7 +31,7 @@ import com.compass.project.config.ErrorConfig;
 public class ErrorControllerAdvice {
 
 	@ExceptionHandler(value = { EntityNotFoundException.class, NoSuchFieldException.class,
-			EmptyResultDataAccessException.class, NoSuchElementException.class })
+			EmptyResultDataAccessException.class, NoSuchElementException.class, PropertyReferenceException.class })
 	public ResponseEntity<ErrorConfig> nullException(HttpServletRequest request, Exception ex) {
 		ErrorConfig error = new ErrorConfig(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), request.getRequestURI(),
 				"URL", "Not Found: Missing or Invalid parameters");
