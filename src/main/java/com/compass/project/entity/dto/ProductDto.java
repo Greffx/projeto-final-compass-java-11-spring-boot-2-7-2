@@ -1,7 +1,9 @@
 package com.compass.project.entity.dto;
 
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.domain.Page;
@@ -18,6 +20,8 @@ public class ProductDto {
 	private String name;
 
 	@NotNull
+	@DecimalMin(value = "0.1")
+	@Positive
 	private Double price;
 
 	@NotNull
